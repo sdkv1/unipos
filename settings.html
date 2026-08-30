@@ -12,7 +12,6 @@
         tailwind.config = { theme: { extend: { colors: { primary: '#6366f1', secondary: '#8b5cf6', accent: '#06b6d4', success: '#10b981', danger: '#ef4444', warning: '#f59e0b', dark: '#1e293b' } } } };
     </script>
     <style>
-        [x-cloak] { display: none !important; }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
         @keyframes toastIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
@@ -80,7 +79,7 @@
                     </div>
                     <div class="flex-1 min-w-0">
                         <p class="text-sm font-medium truncate" id="storeNameSidebar">Toko Saya</p>
-                        <p class="text-xs text-gray-500">Admin • v<span id="appVersion"></span></p>
+                        <p class="text-xs text-gray-500">Admin • v<span x-data x-text="typeof APP_VERSION !== 'undefined' ? APP_VERSION : ''"></span></p>
                     </div>
                 </div>
             </div>
@@ -180,7 +179,6 @@
             document.getElementById('storeNameTopbar').textContent = settings.storeName;
             document.getElementById('storeNameSidebar').textContent = settings.storeName;
         }
-        document.getElementById('appVersion').textContent = APP_VERSION;
     </script>
     <script src="js/settings.js?v=1.0.6"></script>
 </body>
