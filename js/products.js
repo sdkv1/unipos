@@ -18,7 +18,6 @@ document.addEventListener('alpine:init', () => {
       this.editing = false;
       this.form = { id: null, code: '', name: '', category: '', buyPrice: 0, sellPrice: 0, stock: 0 };
       this.modalOpen = true;
-      console.log('modal opened:', this.modalOpen);
     },
 
     edit(p) {

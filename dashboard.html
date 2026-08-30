@@ -19,6 +19,9 @@
         .toast-in { animation: toastIn 0.3s ease; }
         @media print { .no-print { display: none !important; } }
     </style>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
 </head>
 <body class="bg-gray-100 text-gray-800 font-sans antialiased">
 
@@ -238,7 +241,7 @@
         </main>
     </div>
 
-    <script src="js/shared.js"></script>
+    <script src="js/shared.js?v=1.0.2"></script>
     <script>
         // Live clock
         function updateClock() {
@@ -255,6 +258,6 @@
             document.getElementById('storeNameSidebar').textContent = settings.storeName;
         }
     </script>
-    <script src="js/dashboard.js"></script>
+    <script src="js/dashboard.js?v=1.0.2"></script>
 </body>
 </html>

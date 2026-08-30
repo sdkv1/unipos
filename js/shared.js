@@ -1,5 +1,4 @@
 // UniPOS Shared - Utilities, Storage, Formatters, Toast
-const APP_VERSION = '1.0.2';
 
 const DB = {
   get(key, fallback) {
@@ -64,37 +63,7 @@ const Toast = {
   }
 };
 
-// Demo data
-function loadDemoData() {
-  const demo = [
-    { id: uid.product(), code: 'MKN001', name: 'Nasi Goreng Spesial', category: 'Makanan', buyPrice: 12000, sellPrice: 18000, stock: 50 },
-    { id: uid.product(), code: 'MKN002', name: 'Mie Ayam Bakso', category: 'Makanan', buyPrice: 10000, sellPrice: 15000, stock: 40 },
-    { id: uid.product(), code: 'MKN003', name: 'Sate Ayam 10 Tusuk', category: 'Makanan', buyPrice: 15000, sellPrice: 22000, stock: 30 },
-    { id: uid.product(), code: 'MNM001', name: 'Es Teh Manis', category: 'Minuman', buyPrice: 2000, sellPrice: 5000, stock: 100 },
-    { id: uid.product(), code: 'MNM002', name: 'Es Jeruk', category: 'Minuman', buyPrice: 3000, sellPrice: 7000, stock: 80 },
-    { id: uid.product(), code: 'MNM003', name: 'Kopi Susu', category: 'Minuman', buyPrice: 4000, sellPrice: 10000, stock: 60 },
-    { id: uid.product(), code: 'SNK001', name: 'Keripik Kentang', category: 'Snack', buyPrice: 5000, sellPrice: 8000, stock: 45 },
-    { id: uid.product(), code: 'SNK002', name: 'Roti Bakar', category: 'Snack', buyPrice: 4000, sellPrice: 7000, stock: 35 },
-    { id: uid.product(), code: 'RTK001', name: 'Sabun Mandi 100gr', category: 'RTK', buyPrice: 3500, sellPrice: 5500, stock: 100 },
-    { id: uid.product(), code: 'RTK002', name: 'Shampoo Sachet', category: 'RTK', buyPrice: 2000, sellPrice: 3500, stock: 200 },
-    { id: uid.product(), code: 'MKN004', name: 'Ayam Goreng Crispy', category: 'Makanan', buyPrice: 18000, sellPrice: 25000, stock: 25 },
-    { id: uid.product(), code: 'MNM004', name: 'Jus Alpukat', category: 'Minuman', buyPrice: 8000, sellPrice: 15000, stock: 20 },
-  ];
-  DB.set('products', demo);
-  Toast.show('Data demo berhasil dimuat!', 'success');
-  return demo;
-}
-
-// Init data
-function initData() {
-  let products = DB.get('products', []);
-  if (!products.length) products = loadDemoData();
-  if (!DB.get('transactions', null)) DB.set('transactions', []);
-  if (!DB.get('settings', null)) DB.set('settings', { storeName: 'Toko Saya', address: '', phone: '' });
-  return { products, transactions: DB.get('transactions', []), settings: DB.get('settings', {}) };
-}
-
-// Export / Import
+// Export data (dipakai tombol export di header semua halaman)
 function exportAll() {
   const data = {
     products: DB.get('products', []),
@@ -109,26 +78,4 @@ function exportAll() {
   a.click();
   URL.revokeObjectURL(a.href);
   Toast.show('Data berhasil diexport!', 'success');
-}
-
-function importAll(file, callback) {
-  const reader = new FileReader();
-  reader.onload = e => {
-    try {
-      const data = JSON.parse(e.target.result);
-      if (data.products) DB.set('products', data.products);
-      if (data.transactions) DB.set('transactions', data.transactions);
-      if (data.settings) DB.set('settings', data.settings);
-      Toast.show('Data berhasil diimport!', 'success');
-      if (callback) callback();
-    } catch {
-      Toast.show('Format file tidak valid!', 'error');
-    }
-  };
-  reader.readAsText(file);
-}
-
-function clearAllData() {
-  ['products', 'transactions', 'settings'].forEach(k => localStorage.removeItem('unipos_' + k));
-  Toast.show('Semua data telah dihapus!', 'success');
 }
