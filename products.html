@@ -83,7 +83,7 @@
                         <p class="text-xs text-gray-500">Admin • v<span id="appVersion"></span></p>
                     </div>
                 </div>
-                <p class="text-xs text-gray-600 mt-2 text-center">UniPOS v1.0.2</p>
+                <p class="text-xs text-gray-600 mt-2 text-center">UniPOS v<span class="appVersionText"></span></p>
             </div>
         </aside>
 
@@ -201,7 +201,7 @@
         </main>
     </div>
 
-    <script src="js/shared.js?v=1.0.4"></script>
+    <script src="js/shared.js?v=1.0.5"></script>
     <script>
         // Live clock
         function updateClock() {
@@ -218,7 +218,8 @@
             document.getElementById('storeNameSidebar').textContent = settings.storeName;
         }
         document.getElementById('appVersion').textContent = APP_VERSION;
+        document.querySelectorAll('.appVersionText').forEach(e => e.textContent = APP_VERSION);
     </script>
-    <script src="js/products.js?v=1.0.4"></script>
+    <script src="js/products.js?v=1.0.5"></script>
 </body>
 </html>
