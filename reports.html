@@ -80,7 +80,7 @@
                     </div>
                     <div class="flex-1 min-w-0">
                         <p class="text-sm font-medium truncate" id="storeNameSidebar">Toko Saya</p>
-                        <p class="text-xs text-gray-500">Admin</p>
+                        <p class="text-xs text-gray-500">Admin • v<span id="appVersion"></span></p>
                     </div>
                 </div>
             </div>
@@ -210,6 +210,7 @@
             document.getElementById('storeNameTopbar').textContent = settings.storeName;
             document.getElementById('storeNameSidebar').textContent = settings.storeName;
         }
+        document.getElementById('appVersion').textContent = APP_VERSION;
     </script>
     <script src="js/reports.js?v=1.0.3"></script>
 </body>
