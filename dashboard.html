@@ -12,7 +12,6 @@
         tailwind.config = { theme: { extend: { colors: { primary: '#6366f1', secondary: '#8b5cf6', accent: '#06b6d4', success: '#10b981', danger: '#ef4444', warning: '#f59e0b', dark: '#1e293b' } } } };
     </script>
     <style>
-        [x-cloak] { display: none !important; }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
         @keyframes toastIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
@@ -80,7 +79,7 @@
                     </div>
                     <div class="flex-1 min-w-0">
                         <p class="text-sm font-medium truncate" id="storeNameSidebar">Toko Saya</p>
-                        <p class="text-xs text-gray-500">Admin • v<span id="appVersion"></span></p>
+                        <p class="text-xs text-gray-500">Admin • v<span x-data x-text="typeof APP_VERSION !== 'undefined' ? APP_VERSION : ''"></span></p>
                     </div>
                 </div>
             </div>
@@ -197,7 +196,7 @@
                     </div>
 
                     <!-- Detail Modal -->
-                    <div x-show="detailOpen" x-cloak x-transition.opacity class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+                    <div x-show="detailOpen" x-transition.opacity x-transition.opacity class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
                         <div @click.away="detailOpen = false" class="bg-white rounded-2xl shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
                             <div class="p-6 border-b flex items-center justify-between">
                                 <h3 class="font-bold text-lg"><i class="fas fa-receipt text-indigo-500 mr-2"></i>Detail Transaksi</h3>
@@ -257,7 +256,6 @@
             document.getElementById('storeNameTopbar').textContent = settings.storeName;
             document.getElementById('storeNameSidebar').textContent = settings.storeName;
         }
-        document.getElementById('appVersion').textContent = APP_VERSION;
     </script>
     <script src="js/dashboard.js?v=1.0.6"></script>
 </body>
