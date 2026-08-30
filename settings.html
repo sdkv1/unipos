@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengaturan - UniPOS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        tailwind.config = { theme: { extend: { colors: { primary: '#6366f1', secondary: '#8b5cf6', accent: '#06b6d4', success: '#10b981', danger: '#ef4444', warning: '#f59e0b', dark: '#1e293b' } } } };
+    </script>
+    <style>
+        [x-cloak] { display: none !important; }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+        @keyframes toastIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        .toast-in { animation: toastIn 0.3s ease; }
+        @media print { .no-print { display: none !important; } }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans antialiased">
+
+    <!-- Mobile overlay -->
+    <div x-data="{ sidebarOpen: false }" @keydown.escape.window="sidebarOpen = false">
+        <div x-show="sidebarOpen" @click="sidebarOpen = false" x-transition.opacity class="fixed inset-0 bg-black/50 z-40 lg:hidden"></div>
+
+        <!-- Sidebar -->
+        <aside class="fixed left-0 top-0 h-full w-64 bg-dark text-white z-50 transform transition-transform duration-300 lg:translate-x-0"
+               :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'">
+            <div class="p-6 border-b border-gray-700 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                        <i class="fas fa-cash-register text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-lg leading-tight">UniPOS</h1>
+                        <p class="text-xs text-gray-400">Universal POS</p>
+                    </div>
+                </div>
+                <button @click="sidebarOpen = false" class="lg:hidden text-gray-400 hover:text-white">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <nav class="p-4 space-y-1">
+
+                <a href="dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-gray-400 hover:bg-gray-800 hover:text-white">
+                    <i class="fas fa-chart-line w-5 text-center"></i>
+                    <span class="font-medium">Dashboard</span>
+                </a>
+                <a href="pos.html" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-gray-400 hover:bg-gray-800 hover:text-white">
+                    <i class="fas fa-shopping-cart w-5 text-center"></i>
+                    <span class="font-medium">Kasir</span>
+                </a>
+                <a href="products.html" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-gray-400 hover:bg-gray-800 hover:text-white">
+                    <i class="fas fa-box w-5 text-center"></i>
+                    <span class="font-medium">Produk</span>
+                </a>
+                <a href="transactions.html" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-gray-400 hover:bg-gray-800 hover:text-white">
+                    <i class="fas fa-receipt w-5 text-center"></i>
+                    <span class="font-medium">Transaksi</span>
+                </a>
+                <a href="reports.html" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-gray-400 hover:bg-gray-800 hover:text-white">
+                    <i class="fas fa-chart-bar w-5 text-center"></i>
+                    <span class="font-medium">Laporan</span>
+                </a>
+                <a href="settings.html" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">
+                    <i class="fas fa-cog w-5 text-center"></i>
+                    <span class="font-medium">Pengaturan</span>
+                </a>
+            </nav>
+            <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-700">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-accent to-primary flex items-center justify-center">
+                        <i class="fas fa-user text-white text-xs"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium truncate" id="storeNameSidebar">Toko Saya</p>
+                        <p class="text-xs text-gray-500">Admin</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main -->
+        <main class="lg:ml-64 min-h-screen">
+            <header class="sticky top-0 z-30 bg-white/90 backdrop-blur border-b border-gray-200 px-6 py-4 flex items-center justify-between no-print">
+                <div class="flex items-center gap-4">
+                    <button @click="sidebarOpen = true" class="lg:hidden p-2 rounded-lg hover:bg-gray-200">
+                        <i class="fas fa-bars text-gray-600"></i>
+                    </button>
+                    <div class="flex items-center gap-2 text-gray-500">
+                        <i class="fas fa-store"></i>
+                        <span class="font-medium" id="storeNameTopbar">Toko Saya</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="hidden sm:flex items-center gap-2 text-sm text-gray-500 bg-white px-3 py-1.5 rounded-lg border">
+                        <i class="fas fa-clock"></i>
+                        <span id="liveClock">--</span>
+                    </div>
+                    <button onclick="exportAll()" class="p-2 rounded-lg hover:bg-gray-200 text-gray-600" title="Export Data">
+                        <i class="fas fa-download"></i>
+                    </button>
+                </div>
+            </header>
+
+            <div class="p-6">
+
+                <div x-data="settingsApp()" x-init="init()">
+                    <div class="mb-6">
+                        <h2 class="text-2xl font-bold text-gray-800">Pengaturan</h2>
+                        <p class="text-gray-500">Konfigurasi aplikasi</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                            <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i class="fas fa-store text-indigo-500"></i> Informasi Toko</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama Toko</label>
+                                    <input type="text" x-model="form.storeName" placeholder="Nama Toko" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Alamat</label>
+                                    <textarea x-model="form.address" rows="2" placeholder="Alamat toko..." class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none resize-none"></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">No. Telepon</label>
+                                    <input type="text" x-model="form.phone" placeholder="08xxxxxxxxxx" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none">
+                                </div>
+                                <button @click="save()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-medium hover:opacity-90"><i class="fas fa-save mr-1"></i> Simpan</button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                            <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i class="fas fa-database text-cyan-500"></i> Manajemen Data</h3>
+                            <div class="space-y-4">
+                                <div class="p-4 rounded-xl bg-gray-50">
+                                    <p class="font-medium mb-2">Export Data</p>
+                                    <p class="text-sm text-gray-500 mb-3">Download semua data dalam format JSON</p>
+                                    <button @click="exportAll()" class="px-4 py-2 rounded-xl border border-gray-200 hover:bg-white transition-colors flex items-center gap-2"><i class="fas fa-download"></i> Export JSON</button>
+                                </div>
+                                <div class="p-4 rounded-xl bg-gray-50">
+                                    <p class="font-medium mb-2">Import Data</p>
+                                    <p class="text-sm text-gray-500 mb-3">Upload file JSON untuk restore data</p>
+                                    <input type="file" @change="importFile($event)" accept=".json" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-medium file:bg-indigo-500 file:text-white hover:file:opacity-90 mb-2">
+                                </div>
+                                <div class="p-4 rounded-xl bg-red-50 border border-red-200">
+                                    <p class="font-medium text-red-600 mb-2"><i class="fas fa-exclamation-triangle mr-1"></i> Zona Berbahaya</p>
+                                    <p class="text-sm text-gray-500 mb-3">Semua data akan dihapus permanen</p>
+                                    <button @click="clearAll()" class="px-4 py-2 rounded-xl bg-red-500 text-white hover:bg-red-600 flex items-center gap-2"><i class="fas fa-trash-alt"></i> Hapus Semua Data</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="js/shared.js"></script>
+    <script>
+        // Live clock
+        function updateClock() {
+            const el = document.getElementById('liveClock');
+            if (el) el.textContent = new Date().toLocaleString('id-ID', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit', second:'2-digit' });
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        // Sync store name
+        const settings = DB.get('settings', {});
+        if (settings.storeName) {
+            document.getElementById('storeNameTopbar').textContent = settings.storeName;
+            document.getElementById('storeNameSidebar').textContent = settings.storeName;
+        }
+    </script>
+    <script src="js/settings.js"></script>
+</body>
+</html>
