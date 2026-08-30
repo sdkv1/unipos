@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - UniPOS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        tailwind.config = { theme: { extend: { colors: { primary: '#6366f1', secondary: '#8b5cf6', accent: '#06b6d4', success: '#10b981', danger: '#ef4444', warning: '#f59e0b', dark: '#1e293b' } } } };
+    </script>
+    <style>
+        [x-cloak] { display: none !important; }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+        @keyframes toastIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        .toast-in { animation: toastIn 0.3s ease; }
+        @media print { .no-print { display: none !important; } }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans antialiased">
+
+    <!-- Mobile overlay -->
+    <div x-data="{ sidebarOpen: false }" @keydown.escape.window="sidebarOpen = false">
+        <div x-show="sidebarOpen" @click="sidebarOpen = false" x-transition.opacity class="fixed inset-0 bg-black/50 z-40 lg:hidden"></div>
+
+        <!-- Sidebar -->
+        <aside class="fixed left-0 top-0 h-full w-64 bg-dark text-white z-50 transform transition-transform duration-300 lg:translate-x-0"
+               :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'">
+            <div class="p-6 border-b border-gray-700 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                        <i class="fas fa-cash-register text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-lg leading-tight">UniPOS</h1>
+                        <p class="text-xs text-gray-400">Universal POS</p>
+                    </div>
+                </div>
+                <button @click="sidebarOpen = false" class="lg:hidden text-gray-400 hover:text-white">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <nav class="p-4 space-y-1">
+
+                <a href="dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">
+                    <i class="fas fa-chart-line w-5 text-center"></i>
+                    <span class="font-medium">Dashboard</span>
+                </a>
+                <a href="pos.html" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-gray-400 hover:bg-gray-800 hover:text-white">
+                    <i class="fas fa-shopping-cart w-5 text-center"></i>
+                    <span class="font-medium">Kasir</span>
+                </a>
+                <a href="products.html" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-gray-400 hover:bg-gray-800 hover:text-white">
+                    <i class="fas fa-box w-5 text-center"></i>
+                    <span class="font-medium">Produk</span>
+                </a>
+                <a href="transactions.html" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-gray-400 hover:bg-gray-800 hover:text-white">
+                    <i class="fas fa-receipt w-5 text-center"></i>
+                    <span class="font-medium">Transaksi</span>
+                </a>
+                <a href="reports.html" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-gray-400 hover:bg-gray-800 hover:text-white">
+                    <i class="fas fa-chart-bar w-5 text-center"></i>
+                    <span class="font-medium">Laporan</span>
+                </a>
+                <a href="settings.html" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-gray-400 hover:bg-gray-800 hover:text-white">
+                    <i class="fas fa-cog w-5 text-center"></i>
+                    <span class="font-medium">Pengaturan</span>
+                </a>
+            </nav>
+            <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-700">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-accent to-primary flex items-center justify-center">
+                        <i class="fas fa-user text-white text-xs"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium truncate" id="storeNameSidebar">Toko Saya</p>
+                        <p class="text-xs text-gray-500">Admin</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main -->
+        <main class="lg:ml-64 min-h-screen">
+            <header class="sticky top-0 z-30 bg-white/90 backdrop-blur border-b border-gray-200 px-6 py-4 flex items-center justify-between no-print">
+                <div class="flex items-center gap-4">
+                    <button @click="sidebarOpen = true" class="lg:hidden p-2 rounded-lg hover:bg-gray-200">
+                        <i class="fas fa-bars text-gray-600"></i>
+                    </button>
+                    <div class="flex items-center gap-2 text-gray-500">
+                        <i class="fas fa-store"></i>
+                        <span class="font-medium" id="storeNameTopbar">Toko Saya</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="hidden sm:flex items-center gap-2 text-sm text-gray-500 bg-white px-3 py-1.5 rounded-lg border">
+                        <i class="fas fa-clock"></i>
+                        <span id="liveClock">--</span>
+                    </div>
+                    <button onclick="exportAll()" class="p-2 rounded-lg hover:bg-gray-200 text-gray-600" title="Export Data">
+                        <i class="fas fa-download"></i>
+                    </button>
+                </div>
+            </header>
+
+            <div class="p-6">
+
+                <div x-data="dashboardApp()" x-init="init()">
+                    <div class="mb-6">
+                        <h2 class="text-2xl font-bold text-gray-800">Dashboard</h2>
+                        <p class="text-gray-500">Ringkasan aktivitas toko</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                        <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                                    <i class="fas fa-shopping-bag text-white"></i>
+                                </div>
+                                <span class="text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">Hari Ini</span>
+                            </div>
+                            <p class="text-2xl font-bold" x-text="stats.todaySales"></p>
+                            <p class="text-sm text-gray-500">Total Penjualan</p>
+                        </div>
+                        <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-400 to-red-500 flex items-center justify-center">
+                                    <i class="fas fa-money-bill-wave text-white"></i>
+                                </div>
+                                <span class="text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">Hari Ini</span>
+                            </div>
+                            <p class="text-2xl font-bold" x-text="fmt.rupiah(stats.todayRevenue)"></p>
+                            <p class="text-sm text-gray-500">Pendapatan</p>
+                        </div>
+                        <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-accent to-primary flex items-center justify-center mb-3">
+                                <i class="fas fa-box text-white"></i>
+                            </div>
+                            <p class="text-2xl font-bold" x-text="stats.totalProducts"></p>
+                            <p class="text-sm text-gray-500">Total Produk</p>
+                        </div>
+                        <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-400 to-cyan-400 flex items-center justify-center mb-3">
+                                <i class="fas fa-receipt text-white"></i>
+                            </div>
+                            <p class="text-2xl font-bold" x-text="stats.totalTransactions"></p>
+                            <p class="text-sm text-gray-500">Total Transaksi</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                            <h3 class="font-bold text-lg mb-4 flex items-center gap-2">
+                                <i class="fas fa-fire text-red-500"></i> Produk Terlaris
+                            </h3>
+                            <div class="space-y-3" x-show="topProducts.length">
+                                <template x-for="(item, i) in topProducts.slice(0,5)" :key="i">
+                                    <div class="flex items-center gap-3 p-3 rounded-xl bg-gray-50">
+                                        <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-sm" x-text="i+1"></div>
+                                        <div class="flex-1 min-w-0">
+                                            <p class="font-medium truncate" x-text="item.name"></p>
+                                            <p class="text-xs text-gray-500" x-text="item.qty + ' terjual'"></p>
+                                        </div>
+                                        <span class="font-bold text-indigo-600" x-text="fmt.rupiah(item.revenue)"></span>
+                                    </div>
+                                </template>
+                            </div>
+                            <p x-show="!topProducts.length" class="text-gray-400 text-center py-8">Belum ada data penjualan</p>
+                        </div>
+
+                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                            <h3 class="font-bold text-lg mb-4 flex items-center gap-2">
+                                <i class="fas fa-history text-cyan-500"></i> Transaksi Terakhir
+                            </h3>
+                            <div class="space-y-3" x-show="recentTx.length">
+                                <template x-for="tx in recentTx.slice(0,5)" :key="tx.id">
+                                    <div class="flex items-center gap-3 p-3 rounded-xl bg-gray-50 cursor-pointer hover:bg-gray-100" @click="showDetail(tx)">
+                                        <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                                            <i class="fas fa-check"></i>
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <p class="font-medium text-sm" x-text="'#' + tx.id"></p>
+                                            <p class="text-xs text-gray-500" x-text="tx.date + ' ' + tx.time"></p>
+                                        </div>
+                                        <span class="font-bold" x-text="fmt.rupiah(tx.total)"></span>
+                                    </div>
+                                </template>
+                            </div>
+                            <p x-show="!recentTx.length" class="text-gray-400 text-center py-8">Belum ada transaksi</p>
+                        </div>
+                    </div>
+
+                    <!-- Detail Modal -->
+                    <div x-show="detailOpen" x-cloak x-transition.opacity class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+                        <div @click.away="detailOpen = false" class="bg-white rounded-2xl shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+                            <div class="p-6 border-b flex items-center justify-between">
+                                <h3 class="font-bold text-lg"><i class="fas fa-receipt text-indigo-500 mr-2"></i>Detail Transaksi</h3>
+                                <button @click="detailOpen = false" class="w-8 h-8 rounded-lg hover:bg-gray-100"><i class="fas fa-times text-gray-500"></i></button>
+                            </div>
+                            <div class="p-6" x-show="selectedTx">
+                                <div class="text-center mb-4">
+                                    <h4 class="font-bold text-xl" x-text="settings.storeName || 'Toko Saya'"></h4>
+                                    <p class="text-sm text-gray-500" x-text="settings.address"></p>
+                                    <div class="mt-2 inline-block px-3 py-1 rounded-full bg-gray-100 text-sm font-mono" x-text="'#' + selectedTx.id"></div>
+                                    <p class="text-sm text-gray-500" x-text="selectedTx.date + ' ' + selectedTx.time"></p>
+                                </div>
+                                <div class="space-y-2 mb-4">
+                                    <template x-for="item in selectedTx.items" :key="item.id">
+                                        <div class="flex justify-between py-2 border-b border-gray-100">
+                                            <div>
+                                                <p class="font-medium" x-text="item.name"></p>
+                                                <p class="text-sm text-gray-500" x-text="item.qty + ' x ' + fmt.rupiah(item.price)"></p>
+                                            </div>
+                                            <span class="font-medium" x-text="fmt.rupiah(item.qty * item.price)"></span>
+                                        </div>
+                                    </template>
+                                </div>
+                                <div class="space-y-2 pt-2 border-t-2">
+                                    <div class="flex justify-between"><span class="text-gray-500">Subtotal</span><span x-text="fmt.rupiah(selectedTx.subtotal)"></span></div>
+                                    <div class="flex justify-between"><span class="text-gray-500">Diskon</span><span class="text-red-500" x-text="fmt.rupiah(selectedTx.discount)"></span></div>
+                                    <div class="flex justify-between text-lg font-bold"><span>TOTAL</span><span x-text="fmt.rupiah(selectedTx.total)"></span></div>
+                                    <div class="flex justify-between pt-2 border-t"><span class="text-gray-500">Bayar</span><span x-text="fmt.rupiah(selectedTx.paid)"></span></div>
+                                    <div class="flex justify-between"><span class="text-gray-500">Kembalian</span><span class="text-emerald-600 font-medium" x-text="fmt.rupiah(selectedTx.change)"></span></div>
+                                </div>
+                            </div>
+                            <div class="p-6 border-t flex justify-end gap-3 no-print">
+                                <button @click="detailOpen = false" class="px-5 py-2.5 rounded-xl border hover:bg-gray-50">Tutup</button>
+                                <button @click="window.print()" class="px-5 py-2.5 rounded-xl bg-indigo-500 text-white hover:bg-indigo-600"><i class="fas fa-print mr-1"></i> Cetak</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="js/shared.js"></script>
+    <script>
+        // Live clock
+        function updateClock() {
+            const el = document.getElementById('liveClock');
+            if (el) el.textContent = new Date().toLocaleString('id-ID', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit', second:'2-digit' });
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        // Sync store name
+        const settings = DB.get('settings', {});
+        if (settings.storeName) {
+            document.getElementById('storeNameTopbar').textContent = settings.storeName;
+            document.getElementById('storeNameSidebar').textContent = settings.storeName;
+        }
+    </script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
