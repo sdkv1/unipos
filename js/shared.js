@@ -1,13 +1,5 @@
-// UniPOS Shared - Utilities, Storage, Formatters, Meta
+// UniPOS Shared - Utilities, Storage, Formatters, Toast
 const APP_VERSION = '1.0.8';
-
-// Tampilkan versi di badge sidebar. Pakai vanilla JS murni (bukan Alpine)
-// supaya tetap tampil walau Alpine gagal/telat load.
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('#appVersionBadge').forEach(el => {
-    el.textContent = 'v' + APP_VERSION;
-  });
-});
 
 const DB = {
   get(key, fallback) {
