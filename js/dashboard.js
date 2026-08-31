@@ -5,7 +5,7 @@ document.addEventListener('alpine:init', () => {
     recentTx: [],
     settings: {},
     detailOpen: false,
-    selectedTx: null,
+    selectedTx: { id:'', date:'', time:'', items:[], subtotal:0, discount:0, total:0, paid:0, change:0 },
 
     init() {
       this.settings = DB.get('settings', {});

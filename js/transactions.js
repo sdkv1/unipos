@@ -4,7 +4,7 @@ document.addEventListener('alpine:init', () => {
     search: '',
     dateFilter: '',
     detailOpen: false,
-    selected: null,
+    selected: { id:'', date:'', time:'', items:[], subtotal:0, discount:0, total:0, paid:0, change:0 },
     settings: {},
 
     init() {

@@ -1,5 +1,5 @@
 // UniPOS Shared - Utilities, Storage, Formatters, Toast
-const APP_VERSION = '1.0.6';
+const APP_VERSION = '1.0.7';
 
 const DB = {
   get(key, fallback) {
