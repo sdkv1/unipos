@@ -1,6 +1,11 @@
 // UniPOS Shared - Utilities, Storage, Formatters, Toast
 const APP_VERSION = '1.0.7';
 
+// Daftarkan Alpine store agar versi bisa diakses dari mana saja via $store.app.version
+document.addEventListener('alpine:init', () => {
+  Alpine.store('app', { version: APP_VERSION });
+});
+
 const DB = {
   get(key, fallback) {
     try {
