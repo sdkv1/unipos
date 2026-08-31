@@ -5,13 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kasir - UniPOS</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="js/shared.js?v=1.0.7"></script>
-    <script defer src="js/pos.js?v=1.0.7"></script>
+    <script defer src="js/shared.js?v=1.0.8"></script>
+    <script defer src="js/pos.js?v=1.0.8"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <script>
-        tailwind.config = { theme: { extend: { colors: { primary: '#6366f1', secondary: '#8b5cf6', accent: '#06b6d4', success: '#10b981', danger: '#ef4444', warning: '#f59e0b', dark: '#1e293b' } } } };
+        tailwind.config = { theme: { extend: { colors: { primary: '#6366f1', secondary: '#8b5cf6', accent: '#06b6d4', success: '#10b981', danger: '#ef4444', warning: '#f59e0b', dark: '#1e293b', ink: '#17140f', brass: '#b8752a', brasslight: '#dd9b4e', paper: '#efeae1', mute: '#948c7a' }, fontFamily: { display: ['Manrope','sans-serif'], body: ['Inter','sans-serif'] } } } };
     </script>
     <style>
         .scrollbar-hide::-webkit-scrollbar { display: none; }
@@ -24,65 +26,72 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
 </head>
-<body class="bg-gray-100 text-gray-800 font-sans antialiased">
+<body class="bg-gray-100 text-gray-800 font-body antialiased">
 
     <!-- Mobile overlay -->
     <div x-data="{ sidebarOpen: false }" @keydown.escape.window="sidebarOpen = false">
         <div x-show="sidebarOpen" @click="sidebarOpen = false" x-transition.opacity class="fixed inset-0 bg-black/50 z-40 lg:hidden"></div>
 
         <!-- Sidebar -->
-        <aside class="fixed left-0 top-0 h-full w-64 bg-dark text-white z-50 transform transition-transform duration-300 lg:translate-x-0"
+        <aside class="fixed left-0 top-0 h-full w-64 bg-ink text-paper z-50 transform transition-transform duration-300 lg:translate-x-0 flex flex-col"
                :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'">
-            <div class="p-6 border-b border-gray-700 flex items-center justify-between">
+            <div class="px-5 pt-6 pb-5 flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
-                        <i class="fas fa-cash-register text-white text-lg"></i>
+                    <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-brasslight to-brass flex items-center justify-center shrink-0 shadow-lg shadow-brass/20">
+                        <i class="fas fa-cash-register text-ink text-sm"></i>
                     </div>
-                    <div>
-                        <h1 class="font-bold text-lg leading-tight">UniPOS</h1>
-                        <p class="text-xs text-gray-400">Universal POS</p>
+                    <div class="leading-none">
+                        <div class="font-display font-extrabold text-[17px] tracking-tight text-paper">UniPOS</div>
+                        <div class="text-[11px] text-mute mt-1">Kasir &amp; Toko</div>
                     </div>
                 </div>
-                <button @click="sidebarOpen = false" class="lg:hidden text-gray-400 hover:text-white">
+                <button @click="sidebarOpen = false" class="lg:hidden text-mute hover:text-paper">
                     <i class="fas fa-times text-xl"></i>
                 </button>
             </div>
-            <nav class="p-4 space-y-1">
 
-                <a href="dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-gray-400 hover:bg-gray-800 hover:text-white">
-                    <i class="fas fa-chart-line w-5 text-center"></i>
-                    <span class="font-medium">Dashboard</span>
+            <div class="h-px bg-white/[0.08] mx-5"></div>
+
+            <nav class="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto scrollbar-hide">
+                <a href="dashboard.html" class="group flex items-center gap-3 pl-3.5 pr-3 py-2.5 rounded-lg text-mute hover:text-paper hover:bg-white/[0.04] transition-colors">
+                    <i class="fas fa-chart-line w-4 text-center text-[13px]"></i>
+                    <span class="text-[13.5px] font-medium">Dashboard</span>
                 </a>
-                <a href="pos.html" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">
-                    <i class="fas fa-shopping-cart w-5 text-center"></i>
-                    <span class="font-medium">Kasir</span>
+                <a href="pos.html" class="group flex items-center gap-3 pl-3.5 pr-3 py-2.5 rounded-lg relative text-paper bg-white/[0.06]">
+                    <span class="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-brasslight rounded-full"></span>
+                    <i class="fas fa-cash-register w-4 text-center text-brasslight text-[13px]"></i>
+                    <span class="text-[13.5px] font-medium">Kasir</span>
                 </a>
-                <a href="products.html" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-gray-400 hover:bg-gray-800 hover:text-white">
-                    <i class="fas fa-box w-5 text-center"></i>
-                    <span class="font-medium">Produk</span>
+                <a href="products.html" class="group flex items-center gap-3 pl-3.5 pr-3 py-2.5 rounded-lg text-mute hover:text-paper hover:bg-white/[0.04] transition-colors">
+                    <i class="fas fa-box w-4 text-center text-[13px]"></i>
+                    <span class="text-[13.5px] font-medium">Produk</span>
                 </a>
-                <a href="transactions.html" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-gray-400 hover:bg-gray-800 hover:text-white">
-                    <i class="fas fa-receipt w-5 text-center"></i>
-                    <span class="font-medium">Transaksi</span>
+                <a href="transactions.html" class="group flex items-center gap-3 pl-3.5 pr-3 py-2.5 rounded-lg text-mute hover:text-paper hover:bg-white/[0.04] transition-colors">
+                    <i class="fas fa-receipt w-4 text-center text-[13px]"></i>
+                    <span class="text-[13.5px] font-medium">Transaksi</span>
                 </a>
-                <a href="reports.html" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-gray-400 hover:bg-gray-800 hover:text-white">
-                    <i class="fas fa-chart-bar w-5 text-center"></i>
-                    <span class="font-medium">Laporan</span>
+                <a href="reports.html" class="group flex items-center gap-3 pl-3.5 pr-3 py-2.5 rounded-lg text-mute hover:text-paper hover:bg-white/[0.04] transition-colors">
+                    <i class="fas fa-chart-bar w-4 text-center text-[13px]"></i>
+                    <span class="text-[13.5px] font-medium">Laporan</span>
                 </a>
-                <a href="settings.html" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-gray-400 hover:bg-gray-800 hover:text-white">
-                    <i class="fas fa-cog w-5 text-center"></i>
-                    <span class="font-medium">Pengaturan</span>
+                <a href="settings.html" class="group flex items-center gap-3 pl-3.5 pr-3 py-2.5 rounded-lg text-mute hover:text-paper hover:bg-white/[0.04] transition-colors">
+                    <i class="fas fa-cog w-4 text-center text-[13px]"></i>
+                    <span class="text-[13.5px] font-medium">Pengaturan</span>
                 </a>
             </nav>
-            <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-700">
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-accent to-primary flex items-center justify-center">
-                        <i class="fas fa-user text-white text-xs"></i>
+
+            <div class="h-px bg-white/[0.08] mx-5"></div>
+
+            <div class="px-5 py-4">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-full bg-white/[0.06] border border-white/10 flex items-center justify-center shrink-0">
+                        <i class="fas fa-store text-brasslight text-[11px]"></i>
                     </div>
                     <div class="flex-1 min-w-0">
-                        <p class="text-sm font-medium truncate" id="storeNameSidebar">Toko Saya</p>
-                        <p class="text-xs text-gray-500">Admin • v<span x-text="$store.app?.version || ''"></span></p>
+                        <p class="text-[13px] font-semibold text-paper truncate leading-tight" id="storeNameSidebar">Toko Saya</p>
+                        <p class="text-[11px] text-mute leading-tight">Admin</p>
                     </div>
+                    <span id="appVersionBadge" class="text-[10px] text-mute font-mono shrink-0 px-1.5 py-0.5 rounded bg-white/[0.05]"></span>
                 </div>
             </div>
         </aside>
