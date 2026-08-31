@@ -81,10 +81,10 @@
                     </div>
                     <div class="flex-1 min-w-0">
                         <p class="text-sm font-medium truncate" id="storeNameSidebar">Toko Saya</p>
-                        <p class="text-xs text-gray-500">Admin • v<span x-text="typeof APP_VERSION !== 'undefined' ? APP_VERSION : ''"></span></p>
+                        <p class="text-xs text-gray-500">Admin • v<span x-text="$store.app?.version || ''"></span></p>
                     </div>
                 </div>
-                <p class="text-xs text-gray-600 mt-2 text-center">UniPOS v<span x-text="typeof APP_VERSION !== 'undefined' ? APP_VERSION : ''"></span></p>
+                <p class="text-xs text-gray-600 mt-2 text-center">UniPOS v<span x-text="$store.app?.version || ''"></span></p>
             </div>
         </aside>
 
